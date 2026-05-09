@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Nest | Reimagining Urban Living</title>
+    <meta name="description" content="Smart, Modular & Affordable Housing for Modern Cities.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="logo.png" alt="Urban Nest Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span class="logo-text" style="display: none;">Urban Nest</span>
+            </a>
+            <ul class="nav-links">
+                <li id="navDashboard" style="display: none;"><a href="#dashboard" class="text-primary" style="font-weight: 700;">Dashboard</a></li>
+                <li><a href="#problem">The Problem</a></li>
+                <li><a href="#solution">Solutions</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#" id="loginBtn" class="btn btn-outline" style="display: inline-flex;">Log In</a>
+                <a href="#" id="logoutBtn" class="btn btn-outline" style="display: none;">Log Out</a>
+                <a href="#contact" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Resident Dashboard Section (Hidden by Default) -->
+    <section class="dashboard" id="dashboard" style="display: none;">
+        <div class="dashboard-container">
+            <div class="dashboard-header text-center">
+                <h2 class="section-title">Welcome back, <span class="text-gradient" id="dashboardUserName">Resident</span>!</h2>
+                <p class="section-desc" style="margin: 0 auto;">Here is the latest update on your Urban Nest.</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <!-- Project Tracker -->
+                <div class="glass-card dash-card tracker-card">
+                    <h3>Project Status: <span class="text-primary" id="projectStatusText">Factory Build</span></h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="projectProgressBar" style="width: 50%;"></div>
+                        </div>
+                        <div class="progress-milestones" id="projectMilestones">
+                            <div class="milestone completed"><span>Planning</span></div>
+                            <div class="milestone active"><span>Factory Build</span></div>
+                            <div class="milestone"><span>Shipping</span></div>
+                            <div class="milestone"><span>Installation</span></div>
+                        </div>
+                    </div>
+                    <p class="status-note" id="projectNote"><i class="ph-fill ph-info"></i> Your module framework is currently being assembled at our Austin facility.</p>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="glass-card dash-card actions-card">
+                    <h3>Quick Actions</h3>
+                    <div class="action-grid">
+                        <button class="action-btn" id="btnDocuments"><i class="ph ph-file-text"></i> Documents</button>
+                        <button class="action-btn" id="btnSupport"><i class="ph ph-chat-circle-dots"></i> Support</button>
+                        <button class="action-btn" id="btnUpgrades"><i class="ph ph-wrench"></i> Upgrades</button>
+                        <button class="action-btn" id="btnSchedule"><i class="ph ph-calendar"></i> Schedule</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-saved-configs">
+                <h3>My Saved Configurations</h3>
+                <div class="saved-configs-grid" id="savedConfigsGrid">
+                    <!-- Dynamic configs will go here -->
+                    <div class="saved-card glass-card add-new" id="btnNewConfig">
+                        <div class="add-new-config">
+                            <i class="ph ph-plus-circle text-primary"></i>
+                            <p>Start New Config</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1. Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="badge">🚀 The Future of Housing</div>
+            <h1 class="hero-title">Reimagining <br><span class="text-gradient">Urban Living</span></h1>
+            <p class="hero-subtitle">Smart, Modular & Affordable Housing for Modern Cities.</p>
+            <div class="hero-buttons">
+                <a href="#solution" class="btn btn-primary btn-lg">Get Started</a>
+                <a href="#how-it-works" class="btn btn-secondary btn-lg">
+                    <i class="ph ph-play-circle"></i> View Demo
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-num">500+</span>
+                    <span class="stat-label">Homes Built</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">12</span>
+                    <span class="stat-label">Cities Active</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">98%</span>
+                    <span class="stat-label">Happy Residents</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <!-- 3D style illustration placeholder -->
+            <div class="glass-card hero-image-container">
+                <img src="ed..png" alt="Modern Modular Home" class="floating-img" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                <div class="glass-badge floating-badge-1">
+                    <i class="ph-fill ph-leaf text-green"></i> Eco-Friendly
+                </div>
+                <div class="glass-badge floating-badge-2">
+                    <i class="ph-fill ph-lightning text-yellow"></i> Smart Energy
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Banner -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <span class="marquee-item"><i class="ph-fill ph-check-circle text-primary"></i> As seen on TechCrunch</span>
+            <span class="marquee-item"><i class="ph-fill ph-star text-yellow"></i> Featured in Forbes</span>
+            <span class="marquee-item"><i class="ph-fill ph-lightning text-red"></i> Wired Innovation Award</span>
+            <span class="marquee-item"><i class="ph-fill ph-house text-green"></i> Dwell Magazine</span>
+            <span class="marquee-item"><i class="ph-fill ph-buildings text-primary"></i> ArchDaily Top 100</span>
+            <!-- Duplicate for infinite loop -->
+            <span class="marquee-item"><i class="ph-fill ph-check-circle text-primary"></i> As seen on TechCrunch</span>
+            <span class="marquee-item"><i class="ph-fill ph-star text-yellow"></i> Featured in Forbes</span>
+            <span class="marquee-item"><i class="ph-fill ph-lightning text-red"></i> Wired Innovation Award</span>
+            <span class="marquee-item"><i class="ph-fill ph-house text-green"></i> Dwell Magazine</span>
+            <span class="marquee-item"><i class="ph-fill ph-buildings text-primary"></i> ArchDaily Top 100</span>
+        </div>
+    </div>
+
+    <!-- 2. Problem Section -->
+    <section class="problem" id="problem">
+        <div class="section-header">
+            <h2 class="section-title">The Urban <span class="text-gradient-red">Crisis</span></h2>
+            <p class="section-desc">Cities are growing faster than we can build. The current housing model is broken.</p>
+        </div>
+        <div class="problem-grid">
+            <div class="problem-card reveal-up">
+                <div class="icon-box red-glow">
+                    <i class="ph ph-money"></i>
+                </div>
+                <h3>Skyrocketing Rent</h3>
+                <p>Housing costs have outpaced income growth, pushing people further from city centers.</p>
+            </div>
+            <div class="problem-card reveal-up" style="transition-delay: 100ms;">
+                <div class="icon-box red-glow">
+                    <i class="ph ph-arrows-in-line-horizontal"></i>
+                </div>
+                <h3>Limited Space</h3>
+                <p>Urban density leads to cramped living conditions with poor space optimization.</p>
+            </div>
+            <div class="problem-card reveal-up" style="transition-delay: 200ms;">
+                <div class="icon-box red-glow">
+                    <i class="ph ph-buildings"></i>
+                </div>
+                <h3>Poor Planning</h3>
+                <p>Outdated construction methods lead to long wait times and environmental damage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Solution Section -->
+    <section class="solution" id="solution">
+        <div class="solution-container">
+            <div class="solution-content reveal-left">
+                <h2 class="section-title">Our <span class="text-gradient">Solution</span></h2>
+                <p class="section-desc text-left">Urban Nest provides an innovative approach to housing. We build sustainable, smart, and modular homes that fit perfectly into the modern urban landscape.</p>
+                <ul class="solution-list">
+                    <li><i class="ph-fill ph-check-circle"></i> Pre-fabricated for speed and precision</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Integrated smart home technology</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Carbon-neutral manufacturing process</li>
+                </ul>
+                <a href="#features" class="btn btn-outline mt-4">Explore Features</a>
+            </div>
+            <div class="solution-cards reveal-right">
+                <div class="sol-card">
+                    <i class="ph ph-cube"></i>
+                    <h4>Modular Units</h4>
+                    <p>Expand or shrink your home as your needs change.</p>
+                </div>
+                <div class="sol-card offset">
+                    <i class="ph ph-house-line"></i>
+                    <h4>Smart Living</h4>
+                    <p>AI-driven energy and security management.</p>
+                </div>
+                <div class="sol-card">
+                    <i class="ph ph-leaf"></i>
+                    <h4>Sustainable Design</h4>
+                    <p>Built with 100% recycled and eco-friendly materials.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Features Section -->
+    <section class="features bg-light" id="features">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose <span class="text-gradient">Urban Nest</span></h2>
+            <p class="section-desc">Experience the next generation of housing technology.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal-up">
+                <div class="feat-icon"><i class="ph ph-squares-four"></i></div>
+                <h3>Modular Design</h3>
+                <p>Customize your layout. Add rooms or reconfigure your space seamlessly.</p>
+            </div>
+            <div class="feature-card reveal-up" style="transition-delay: 100ms;">
+                <div class="feat-icon"><i class="ph ph-tree"></i></div>
+                <h3>Eco-Friendly Materials</h3>
+                <p>Constructed with sustainable timber and recycled composites.</p>
+            </div>
+            <div class="feature-card reveal-up" style="transition-delay: 200ms;">
+                <div class="feat-icon"><i class="ph ph-wifi-high"></i></div>
+                <h3>Smart Home Integration</h3>
+                <p>Control lighting, climate, and security from your smartphone.</p>
+            </div>
+            <div class="feature-card reveal-up" style="transition-delay: 300ms;">
+                <div class="feat-icon"><i class="ph ph-piggy-bank"></i></div>
+                <h3>Cost Efficient</h3>
+                <p>Save up to 30% compared to traditional housing costs.</p>
+            </div>
+            <div class="feature-card reveal-up" style="transition-delay: 400ms;">
+                <div class="feat-icon"><i class="ph ph-rocket-launch"></i></div>
+                <h3>Fast Installation</h3>
+                <p>Move in within weeks, not months. Factory-built precision.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <h2 class="section-title">How It <span class="text-gradient">Works</span></h2>
+            <p class="section-desc">Your dream home in 3 simple steps.</p>
+        </div>
+        <div class="steps-container">
+            <div class="step reveal-up">
+                <div class="step-number">1</div>
+                <div class="step-icon"><i class="ph ph-hand-pointing"></i></div>
+                <h3>Choose Module</h3>
+                <p>Select from our range of pre-designed base modules tailored for different needs.</p>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step reveal-up" style="transition-delay: 150ms;">
+                <div class="step-number">2</div>
+                <div class="step-icon"><i class="ph ph-faders"></i></div>
+                <h3>Customize</h3>
+                <p>Personalize your layout, finishes, and smart tech options using our 3D builder.</p>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step reveal-up" style="transition-delay: 300ms;">
+                <div class="step-number">3</div>
+                <div class="step-icon"><i class="ph ph-crane"></i></div>
+                <h3>Installation</h3>
+                <p>We deliver and install your home on your site within days.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Benefits / Impact Section -->
+    <section class="benefits bg-gradient-dark text-white" id="benefits">
+        <div class="benefits-grid">
+            <div class="benefit-stat">
+                <div class="counter" data-target="30">0</div><span class="symbol">%</span>
+                <p>Cost Reduction</p>
+            </div>
+            <div class="benefit-stat">
+                <div class="counter" data-target="50">0</div><span class="symbol">%</span>
+                <p>Faster Construction</p>
+            </div>
+            <div class="benefit-stat">
+                <div class="counter" data-target="100">0</div><span class="symbol">%</span>
+                <p>Eco-friendly Living</p>
+            </div>
+            <div class="benefit-stat">
+                <div class="counter" data-target="40">0</div><span class="symbol">%</span>
+                <p>Better Space Utilization</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Use Cases -->
+    <section class="use-cases" id="use-cases">
+        <div class="section-header">
+            <h2 class="section-title">Built For <span class="text-gradient">Everyone</span></h2>
+            <p class="section-desc">Adaptable spaces for a variety of needs.</p>
+        </div>
+        <div class="use-cases-grid">
+            <div class="uc-card reveal-up">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Students">
+                <div class="uc-content">
+                    <h3>Students</h3>
+                    <p>Affordable, compact co-living spaces.</p>
+                </div>
+            </div>
+            <div class="uc-card reveal-up" style="transition-delay: 100ms;">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Professionals">
+                <div class="uc-content">
+                    <h3>Working Professionals</h3>
+                    <p>Modern studios in the heart of the city.</p>
+                </div>
+            </div>
+            <div class="uc-card reveal-up" style="transition-delay: 200ms;">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Temporary Housing">
+                <div class="uc-content">
+                    <h3>Temporary Housing</h3>
+                    <p>Quick deployment for events or transition.</p>
+                </div>
+            </div>
+            <div class="uc-card reveal-up" style="transition-delay: 300ms;">
+                <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Disaster Relief">
+                <div class="uc-content">
+                    <h3>Disaster Relief</h3>
+                    <p>Rapid response shelters for emergencies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Pricing Section -->
+    <section class="pricing bg-light" id="pricing">
+        <div class="section-header">
+            <h2 class="section-title">Transparent <span class="text-gradient">Pricing</span></h2>
+            <p class="section-desc">Choose the plan that fits your vision.</p>
+        </div>
+        <div class="pricing-cards">
+            <!-- Basic Plan -->
+            <div class="price-card reveal-up">
+                <div class="plan-name">Basic</div>
+                <div class="plan-price"><span>$</span>35k</div>
+                <p class="plan-desc">Perfect for a cozy minimalist lifestyle.</p>
+                <ul class="plan-features">
+                    <li><i class="ph ph-check"></i> 1 Bedroom Studio</li>
+                    <li><i class="ph ph-check"></i> Standard Finishes</li>
+                    <li><i class="ph ph-check"></i> Basic Smart Home Kit</li>
+                    <li class="disabled"><i class="ph ph-x"></i> Solar Panel Integration</li>
+                </ul>
+                <a href="#contact" class="btn btn-outline btn-full">Select Plan</a>
+            </div>
+            
+            <!-- Standard Plan -->
+            <div class="price-card popular reveal-up" style="transition-delay: 150ms;">
+                <div class="popular-badge">Most Popular</div>
+                <div class="plan-name">Standard</div>
+                <div class="plan-price"><span>$</span>65k</div>
+                <p class="plan-desc">Ideal for small families and professionals.</p>
+                <ul class="plan-features">
+                    <li><i class="ph ph-check"></i> 2 Bedrooms</li>
+                    <li><i class="ph ph-check"></i> Premium Finishes</li>
+                    <li><i class="ph ph-check"></i> Full Smart Home Integration</li>
+                    <li><i class="ph ph-check"></i> Solar Panel Ready</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary btn-full">Select Plan</a>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="price-card reveal-up" style="transition-delay: 300ms;">
+                <div class="plan-name">Premium</div>
+                <div class="plan-price"><span>$</span>110k</div>
+                <p class="plan-desc">Luxury modular living with no compromises.</p>
+                <ul class="plan-features">
+                    <li><i class="ph ph-check"></i> 3+ Bedrooms & Deck</li>
+                    <li><i class="ph ph-check"></i> Luxury Eco-Finishes</li>
+                    <li><i class="ph ph-check"></i> Advanced AI Home System</li>
+                    <li><i class="ph ph-check"></i> Full Off-Grid Solar Kit</li>
+                </ul>
+                <a href="#contact" class="btn btn-outline btn-full">Select Plan</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="section-header">
+            <h2 class="section-title">What Residents <span class="text-gradient">Say</span></h2>
+        </div>
+        <div class="testimonial-slider">
+            <div class="testimo-card">
+                <i class="ph-fill ph-quotes testimo-icon"></i>
+                <p class="testimo-text">"Urban Nest completely changed how I view city living. The smart integration makes my day seamless, and my energy bills are practically zero."</p>
+                <div class="testimo-author">
+                    <img src="https://i.pravatar.cc/150?img=32" alt="Sarah J.">
+                    <div>
+                        <h4>Sarah Jenkins</h4>
+                        <p>Software Engineer, Austin</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimo-card">
+                <i class="ph-fill ph-quotes testimo-icon"></i>
+                <p class="testimo-text">"The installation was mind-blowing. In less than two weeks, my modular home was fully set up. It feels incredibly premium and spacious inside."</p>
+                <div class="testimo-author">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Mark T.">
+                    <div>
+                        <h4>Mark Thompson</h4>
+                        <p>Architect, Seattle</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimo-card">
+                <i class="ph-fill ph-quotes testimo-icon"></i>
+                <p class="testimo-text">"As a startup founder, I needed an affordable housing solution that didn't compromise on aesthetics. Urban Nest delivered beyond my expectations."</p>
+                <div class="testimo-author">
+                    <img src="https://i.pravatar.cc/150?img=47" alt="Elena R.">
+                    <div>
+                        <h4>Elena Rodriguez</h4>
+                        <p>Entrepreneur, Denver</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Gallery Section -->
+    <section class="gallery bg-light" id="gallery">
+        <div class="section-header">
+            <h2 class="section-title">Inside <span class="text-gradient">Urban Nest</span></h2>
+            <p class="section-desc">Take a look at our modern modular homes.</p>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item large reveal-up"><img src="ed777.png" alt="Gallery 1"></div>
+            <div class="gallery-item reveal-up" style="transition-delay: 100ms;"><img src="ed7.png" alt="Gallery 2"></div>
+            <div class="gallery-item reveal-up" style="transition-delay: 200ms;"><img src="ed77.png" alt="g"></div>
+            <div class="gallery-item reveal-up" style="transition-delay: 300ms;"><img src="ed777.png" alt="Gallery 4"></div>
+            <div class="gallery-item reveal-up" style="transition-delay: 400ms;"><img src="ed77.png" alt="Gallery 5"></div>
+        </div>
+    </section>
+
+    <!-- 11. FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="faq-container">
+            <div class="section-header">
+                <h2 class="section-title">Common <span class="text-gradient">Questions</span></h2>
+            </div>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">How long does installation take? <i class="ph ph-caret-down"></i></button>
+                    <div class="accordion-content">
+                        <p>Once your site is prepped, our standard modules can be installed and connected to utilities in just 3 to 5 days.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Are the homes weather-resistant? <i class="ph ph-caret-down"></i></button>
+                    <div class="accordion-content">
+                        <p>Yes! Our homes are engineered to withstand extreme weather conditions, including hurricane-force winds and heavy snow loads.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Can I expand my home later? <i class="ph ph-caret-down"></i></button>
+                    <div class="accordion-content">
+                        <p>Absolutely. The modular nature of Urban Nest allows you to easily add new rooms or sections to your existing home as your needs grow.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Do you help with permits? <i class="ph ph-caret-down"></i></button>
+                    <div class="accordion-content">
+                        <p>Yes, our team handles the entire permitting process in all cities where we operate, ensuring full compliance with local zoning laws.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container glass-card reveal-up">
+            <div class="contact-info">
+                <h2>Ready to move in?</h2>
+                <p>Request a demo or get in touch with our housing specialists today.</p>
+                <div class="info-item">
+                    <i class="ph ph-map-pin"></i>
+                    <span>100 Innovation Drive, San Francisco, CA</span>
+                </div>
+                <div class="info-item">
+                    <i class="ph ph-envelope-simple"></i>
+                    <span>hello@urbannest.com</span>
+                </div>
+                <div class="info-item">
+                    <i class="ph ph-phone"></i>
+                    <span>+1 (800) 123-4567</span>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="4" placeholder="I'm interested in the Standard Plan..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Request a Demo</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 13. Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <img src="logo.png" alt="Urban Nest Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="logo-text" style="display: none;">Urban Nest</span>
+                </a>
+                <p>Smart, Modular & Affordable Housing for Modern Cities.</p>
+                <div class="footer-contact-info" style="margin: 1.5rem 0;">
+                    <p style="margin-bottom: 0.5rem;"><i class="ph ph-map-pin" style="color: var(--primary); margin-right: 0.5rem;"></i>100 Innovation Drive, SF, CA</p>
+                    <p style="margin-bottom: 0.5rem;"><i class="ph ph-phone" style="color: var(--primary); margin-right: 0.5rem;"></i>+1 (800) 123-4567</p>
+                    <p><i class="ph ph-envelope-simple" style="color: var(--primary); margin-right: 0.5rem;"></i>hello@urbannest.com</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="ph ph-twitter-logo"></i></a>
+                    <a href="#"><i class="ph ph-instagram-logo"></i></a>
+                    <a href="#"><i class="ph ph-linkedin-logo"></i></a>
+                    <a href="#"><i class="ph ph-facebook-logo"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Press</a>
+                    <a href="#">Our Story</a>
+                </div>
+                <div class="link-group">
+                    <h4>Resources</h4>
+                    <a href="#">Blog</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#">Support</a>
+                    <a href="#">Help Center</a>
+                </div>
+                <div class="link-group newsletter-group">
+                    <h4>Newsletter</h4>
+                    <p style="margin-bottom: 1rem; font-size: 0.875rem;">Subscribe to get the latest updates and news.</p>
+                    <form id="newsletterForm" action="#" class="newsletter-form" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <input type="email" id="newsletterEmail" placeholder="Your email address" required style="padding: 0.75rem; border-radius: 0.5rem; border: none; flex: 1; outline: none;">
+                        <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; border-radius: 0.5rem;"><i class="ph ph-paper-plane-right"></i></button>
+                    </form>
+                    <div class="link-group" style="margin-top: 2rem;">
+                        <h4>Legal</h4>
+                        <div style="display: flex; gap: 1rem;">
+                            <a href="privacy.html">Privacy Policy</a>
+                            <a href="terms.html">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Urban Nest. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login/Register Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content glass-card">
+            <button class="modal-close" id="closeModal"><i class="ph ph-x"></i></button>
+            
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="login">Log In</button>
+                <button class="modal-tab" data-tab="register">Register</button>
+            </div>
+            
+            <div class="modal-body" id="loginFormContainer">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Log In</button>
+                </form>
+            </div>
+            
+            <div class="modal-body" id="registerFormContainer" style="display: none;">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Name</label>
+                        <input type="text" id="registerName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Back to Top">
+        <i class="ph ph-arrow-up"></i>
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
