@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Determine API Base URL for local vs Vercel
+    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? (window.location.port === '5000' || window.location.port === '3000' ? '' : 'http://localhost:5000') 
+        : (window.location.protocol === 'file:' ? 'http://localhost:5000' : '');
+
     // 1. Sticky Navigation
     const navbar = document.getElementById('navbar');
     
@@ -219,22 +224,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = document.getElementById('message').value;
 
             try {
-                const response = await fetch('http://localhost:5000/api/contact', {
+                const response = await fetch(`${API_BASE_URL}/api/contact`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, message })
                 });
                 
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Thanks for your message! We will get back to you soon.');
-                    contactForm.reset();
-                } else {
-                    alert('Error: ' + (data.error || 'Something went wrong'));
+                const responseText = await response.text();
+                try {
+                    const data = JSON.parse(responseText);
+                    if (response.ok) {
+                        alert('Thanks for your message! We will get back to you soon.');
+                        contactForm.reset();
+                    } else {
+                        alert('Error: ' + (data.error || 'Something went wrong'));
+                    }
+                } catch(e) {
+                    console.error("Non-JSON response from server:", responseText);
+                    alert(`Server Error (${response.status}): Please check Vercel Function logs. MongoDB Atlas IP Allowlist might need to be set to 0.0.0.0/0`);
                 }
             } catch (err) {
                 console.error(err);
-                alert('Failed to connect to the server. Make sure the backend is running.');
+                alert(`Network Error: ${err.message}. Failed to connect to the server.`);
             } finally {
                 submitBtn.innerText = originalText;
                 submitBtn.disabled = false;
@@ -252,22 +263,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('newsletterEmail').value;
 
             try {
-                const response = await fetch('http://localhost:5000/api/subscribe', {
+                const response = await fetch(`${API_BASE_URL}/api/subscribe`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
                 });
                 
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Thanks for subscribing!');
-                    newsletterForm.reset();
-                } else {
-                    alert(data.error || 'Something went wrong');
+                const responseText = await response.text();
+                try {
+                    const data = JSON.parse(responseText);
+                    if (response.ok) {
+                        alert('Thanks for subscribing!');
+                        newsletterForm.reset();
+                    } else {
+                        alert(data.error || 'Something went wrong');
+                    }
+                } catch(e) {
+                    console.error("Non-JSON response from server:", responseText);
+                    alert(`Server Error (${response.status}): Please check Vercel Function logs. MongoDB Atlas IP Allowlist might need to be set to 0.0.0.0/0`);
                 }
             } catch (err) {
                 console.error(err);
-                alert('Failed to connect to the server.');
+                alert(`Network Error: ${err.message}. Failed to connect to the server.`);
             } finally {
                 submitBtn.disabled = false;
             }
@@ -301,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Fetch Dashboard Data
         try {
-            const response = await fetch(`http://localhost:5000/api/dashboard?email=${encodeURIComponent(user.email)}`);
+            const response = await fetch(`${API_BASE_URL}/api/dashboard?email=${encodeURIComponent(user.email)}`);
             const data = await response.json();
             if (response.ok) {
                 // Update Project Tracker
@@ -437,26 +454,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('loginPassword').value;
 
             try {
-                const response = await fetch('http://localhost:5000/api/login', {
+                const response = await fetch(`${API_BASE_URL}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
                 
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Login successful! Welcome back, ' + data.user.name);
-                    localStorage.setItem('urbanNestUser', JSON.stringify(data.user));
-                    authModal.classList.remove('active');
-                    showDashboard(data.user);
-                    if(dashboardSection) dashboardSection.scrollIntoView({ behavior: 'smooth' });
-                    loginForm.reset();
-                } else {
-                    alert('Error: ' + (data.error || 'Invalid credentials'));
+                const responseText = await response.text();
+                try {
+                    const data = JSON.parse(responseText);
+                    if (response.ok) {
+                        alert('Login successful! Welcome back, ' + data.user.name);
+                        localStorage.setItem('urbanNestUser', JSON.stringify(data.user));
+                        authModal.classList.remove('active');
+                        showDashboard(data.user);
+                        if(dashboardSection) dashboardSection.scrollIntoView({ behavior: 'smooth' });
+                        loginForm.reset();
+                    } else {
+                        alert('Error: ' + (data.error || 'Invalid credentials'));
+                    }
+                } catch(e) {
+                    console.error("Non-JSON response from server:", responseText);
+                    alert(`Server Error (${response.status}): Please check Vercel Function logs. MongoDB Atlas IP Allowlist might need to be set to 0.0.0.0/0`);
                 }
             } catch (err) {
                 console.error(err);
-                alert('Failed to connect to the server.');
+                alert(`Network Error: ${err.message}. Failed to connect to the server.`);
             } finally {
                 submitBtn.innerText = originalText;
                 submitBtn.disabled = false;
@@ -478,25 +501,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('registerPassword').value;
 
             try {
-                const response = await fetch('http://localhost:5000/api/register', {
+                const response = await fetch(`${API_BASE_URL}/api/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, password })
                 });
                 
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Registration successful! You can now log in.');
-                    // Switch to login tab
-                    modalTabs[0].click();
-                    document.getElementById('loginEmail').value = email;
-                    registerForm.reset();
-                } else {
-                    alert('Error: ' + (data.error || 'Registration failed'));
+                const responseText = await response.text();
+                try {
+                    const data = JSON.parse(responseText);
+                    if (response.ok) {
+                        alert('Registration successful! You can now log in.');
+                        // Switch to login tab
+                        modalTabs[0].click();
+                        document.getElementById('loginEmail').value = email;
+                        registerForm.reset();
+                    } else {
+                        alert('Error: ' + (data.error || 'Registration failed'));
+                    }
+                } catch(e) {
+                    console.error("Non-JSON response from server:", responseText);
+                    alert(`Server Error (${response.status}): Please check Vercel Function logs. MongoDB Atlas IP Allowlist might need to be set to 0.0.0.0/0`);
                 }
             } catch (err) {
                 console.error(err);
-                alert('Failed to connect to the server.');
+                alert(`Network Error: ${err.message}. Failed to connect to the server.`);
             } finally {
                 submitBtn.innerText = originalText;
                 submitBtn.disabled = false;
@@ -556,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (configName && configName.trim() !== "") {
                 btnNewConfig.querySelector('p').innerText = 'Saving...';
                 try {
-                    const response = await fetch('http://localhost:5000/api/configs', {
+                    const response = await fetch(`${API_BASE_URL}/api/configs`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email: user.email, name: configName })
