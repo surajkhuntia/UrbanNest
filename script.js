@@ -305,12 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             if (response.ok) {
                 // Update Project Tracker
+                const statusText = document.getElementById('projectStatusText');
+                const progressBar = document.getElementById('projectProgressBar');
+                const note = document.getElementById('projectNote');
+                const milestones = document.querySelectorAll('.milestone');
+                
                 if (data.project) {
-                    const statusText = document.getElementById('projectStatusText');
-                    const progressBar = document.getElementById('projectProgressBar');
-                    const note = document.getElementById('projectNote');
-                    const milestones = document.querySelectorAll('.milestone');
-                    
                     if(statusText) statusText.innerText = data.project.status;
                     if(progressBar) progressBar.style.width = data.project.progress_percent + '%';
                     if(note) note.innerHTML = `<i class="ph-fill ph-info"></i> ${data.project.note || 'Project tracking active.'}`;
@@ -325,6 +325,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         m.className = 'milestone';
                         if (idx < activeIndex) m.classList.add('completed');
                         if (idx === activeIndex) m.classList.add('active');
+                    });
+                } else {
+                    if(statusText) statusText.innerText = "No Project Started";
+                    if(progressBar) progressBar.style.width = '0%';
+                    if(note) note.innerHTML = `<i class="ph-fill ph-info"></i> Save a configuration to start your project.`;
+                    
+                    milestones.forEach((m) => {
+                        m.className = 'milestone';
                     });
                 }
                 

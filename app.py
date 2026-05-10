@@ -1,75 +1,22 @@
-import sqlite3
+from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS so the frontend can communicate with the backend
 
-DB_FILE = 'database.db'
+client = MongoClient('mongodb+srv://surajkhuntia686_db_user:BtUmernZeNZsaJc7@cluster0.t1qyu7l.mongodb.net/?appName=Cluster0')
+db = client.urbannest
 
 def init_db():
-    # Initialize the database with required tables if they don't exist
-    conn = sqlite3.connect(DB_FILE)
-    c = conn.cursor()
-    
-    # Table for contact form submissions
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS contacts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            message TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    
-    # Table for newsletter subscriptions
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS subscribers (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT UNIQUE NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    
-    # Table for users
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    
-    # Table for saved configurations
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS saved_configs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT NOT NULL,
-            name TEXT NOT NULL,
-            image_url TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    
-    # Table for user projects
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS user_projects (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT UNIQUE NOT NULL,
-            status TEXT NOT NULL,
-            progress_percent INTEGER NOT NULL,
-            note TEXT,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    
-    conn.commit()
-    conn.close()
+    # Initialize the database with required collections and indexes if they don't exist
+    db.subscribers.create_index("email", unique=True)
+    db.users.create_index("email", unique=True)
+    db.user_projects.create_index("email", unique=True)
 
 @app.route('/api/contact', methods=['POST'])
 def contact():
@@ -82,11 +29,12 @@ def contact():
         return jsonify({'error': 'Missing required fields'}), 400
         
     try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        c.execute('INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)', (name, email, message))
-        conn.commit()
-        conn.close()
+        db.contacts.insert_one({
+            "name": name,
+            "email": email,
+            "message": message,
+            "created_at": datetime.utcnow()
+        })
         return jsonify({'success': True, 'message': 'Contact form submitted successfully!'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -100,13 +48,12 @@ def subscribe():
         return jsonify({'error': 'Missing email field'}), 400
         
     try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        c.execute('INSERT INTO subscribers (email) VALUES (?)', (email,))
-        conn.commit()
-        conn.close()
+        db.subscribers.insert_one({
+            "email": email,
+            "created_at": datetime.utcnow()
+        })
         return jsonify({'success': True, 'message': 'Subscribed successfully!'}), 201
-    except sqlite3.IntegrityError:
+    except DuplicateKeyError:
         return jsonify({'error': 'Email already subscribed!'}), 409
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -124,13 +71,14 @@ def register():
     hashed_password = generate_password_hash(password)
     
     try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        c.execute('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', (name, email, hashed_password))
-        conn.commit()
-        conn.close()
+        db.users.insert_one({
+            "name": name,
+            "email": email,
+            "password": hashed_password,
+            "created_at": datetime.utcnow()
+        })
         return jsonify({'success': True, 'message': 'Registration successful!'}), 201
-    except sqlite3.IntegrityError:
+    except DuplicateKeyError:
         return jsonify({'error': 'Email already registered!'}), 409
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -145,12 +93,7 @@ def login():
         return jsonify({'error': 'Missing required fields'}), 400
         
     try:
-        conn = sqlite3.connect(DB_FILE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
-        c.execute('SELECT * FROM users WHERE email = ?', (email,))
-        user = c.fetchone()
-        conn.close()
+        user = db.users.find_one({"email": email})
         
         if user and check_password_hash(user['password'], password):
             return jsonify({'success': True, 'message': 'Login successful!', 'user': {'name': user['name'], 'email': user['email']}}), 200
@@ -166,20 +109,12 @@ def get_dashboard():
         return jsonify({'error': 'Missing email parameter'}), 400
         
     try:
-        conn = sqlite3.connect(DB_FILE)
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
-        
         # Get project
-        c.execute('SELECT * FROM user_projects WHERE email = ?', (email,))
-        project_row = c.fetchone()
-        project = dict(project_row) if project_row else None
+        project = db.user_projects.find_one({"email": email}, {"_id": 0})
         
         # Get configs
-        c.execute('SELECT * FROM saved_configs WHERE email = ? ORDER BY created_at DESC', (email,))
-        configs = [dict(row) for row in c.fetchall()]
+        configs = list(db.saved_configs.find({"email": email}, {"_id": 0}).sort("created_at", -1))
         
-        conn.close()
         return jsonify({'success': True, 'project': project, 'configs': configs}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -195,18 +130,24 @@ def save_config():
         return jsonify({'error': 'Missing email or name'}), 400
         
     try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        c.execute('INSERT INTO saved_configs (email, name, image_url) VALUES (?, ?, ?)', (email, name, image_url))
+        db.saved_configs.insert_one({
+            "email": email,
+            "name": name,
+            "image_url": image_url,
+            "created_at": datetime.utcnow()
+        })
         
         # If user doesn't have a project yet, create a default one
-        c.execute('SELECT id FROM user_projects WHERE email = ?', (email,))
-        if not c.fetchone():
-            c.execute('INSERT INTO user_projects (email, status, progress_percent, note) VALUES (?, ?, ?, ?)', 
-                     (email, 'Planning', 25, 'We are reviewing your initial configuration.'))
+        project = db.user_projects.find_one({"email": email})
+        if not project:
+            db.user_projects.insert_one({
+                "email": email,
+                "status": "Planning",
+                "progress_percent": 25,
+                "note": "We are reviewing your initial configuration.",
+                "updated_at": datetime.utcnow()
+            })
                      
-        conn.commit()
-        conn.close()
         return jsonify({'success': True, 'message': 'Configuration saved!'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
